@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join the Waitlist | VIRL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f8f7f4;
+        color: #111;
+        font-family: "Instrument Sans", sans-serif;
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-x: hidden;
+      }
+
+      .onboarding-container {
+        width: 100%;
+        max-width: 480px;
+        padding: 40px 24px;
+        box-sizing: border-box;
+        position: relative;
+      }
+
+      /* Refined Progress Bar */
+      .progress-wrapper {
+        position: fixed;
+        top: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 48px);
+        max-width: 432px;
+        height: 12px;
+        background: #fff;
+        border: 2px solid #111;
+        border-radius: 100px;
+        z-index: 1000;
+        overflow: visible;
+      }
+      .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: #ff5100;
+        border-radius: 100px;
+        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+      }
+
+      .step {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        opacity: 0;
+        transform: translateX(40px);
+        transition:
+          opacity 0.4s,
+          transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .step.active {
+        display: flex;
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      h1 {
+        font-size: 56px;
+        font-weight: 800;
+        margin: 0 0 16px 0;
+        text-align: center;
+        line-height: 1;
+        letter-spacing: -0.04em;
+      }
+
+      p.subtitle {
+        margin: 0 0 40px 0;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      /* Floating Label Input Group */
+      .input-group {
+        width: 100%;
+        position: relative;
+        margin-bottom: 8px;
+        border: 1px solid #111;
+        border-radius: 32px;
+        padding: 0;
+        background: transparent;
+        transition:
+          outline 0.2s,
+          border-color 0.2s;
+        box-sizing: border-box;
+        height: 64px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+      .input-group:focus-within {
+        outline: 2px solid #ff5100;
+        border-color: #ff5100;
+      }
+
+      .input-group.error {
+        outline: 2px solid #ff0000;
+        border-color: #ff0000;
+      }
+      .input-group.error label {
+        color: #ff0000;
+      }
+
+      .input-group label {
+        position: absolute;
+        left: 24px;
+        top: 20px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #666;
+        transition: all 0.2s ease;
+        pointer-events: none;
+      }
+
+      .input-group input {
+        width: 100%;
+        border: none;
+        background: transparent;
+        font-family: "Instrument Sans", sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        outline: none;
+        padding: 12px 24px;
+        color: #111;
+        box-sizing: border-box;
+      }
+
+      .input-group input:focus + label,
+      .input-group input:not(:placeholder-shown) + label {
+        top: 8px;
+        font-size: 11px;
+        font-weight: 800;
+        color: #ff5100;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .error-text {
+        color: #ff0000;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 16px;
+        margin-left: 24px;
+        display: none;
+        align-self: flex-start;
+      }
+
+      .btn-primary {
+        width: 100%;
+        background-color: #ff5100;
+        color: #111;
+        border: 1px solid #111;
+        padding: 20px;
+        font-size: 18px;
+        font-weight: 700;
+        border-radius: 100px;
+        cursor: pointer;
+        transition:
+          transform 0.1s,
+          background-color 0.2s;
+        font-family: "Instrument Sans", sans-serif;
+        margin-top: 8px;
+        position: relative;
+      }
+      .btn-primary:active {
+        transform: scale(0.98);
+      }
+      .btn-primary:hover {
+        background-color: #ff6a20; /* Original orange hover */
+      }
+
+      .choice-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid #111;
+        border-radius: 32px;
+        padding: 20px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: left;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-family: "Instrument Sans", sans-serif;
+        color: #111;
+        transition: all 0.2s;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .choice-btn:hover {
+        background-color: rgba(17, 17, 17, 0.05);
+      }
+      .choice-btn.selected {
+        background-color: #111;
+        color: #fff;
+      }
+
+      /* Other choice input bar */
+      .other-choice-input {
+        background: transparent;
+        border: none;
+        color: inherit;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        outline: none;
+        width: 100%;
+        padding: 0;
+        display: none;
+      }
+      .choice-btn.other-active span {
+        display: none;
+      }
+      .choice-btn.other-active .other-choice-input {
+        display: block;
+      }
+
+      .terms {
+        margin-top: 32px;
+        font-size: 13px;
+        text-align: center;
+        color: #666;
+        font-weight: 500;
+      }
+
+      /* Particle Styling */
+      .particle {
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        border-radius: 50%;
+      }
+
+      /* Social Follow Pills */
+      .social-pills {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+        justify-content: center;
+        width: 100%;
+      }
+      .social-pill {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 28px;
+        background: #fff;
+        border: 1px solid #111;
+        border-radius: 100px;
+        font-size: 16px;
+        font-weight: 700;
+        text-decoration: none;
+        color: #111;
+        transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        min-width: 120px;
+      }
+      .social-pill:hover {
+        background: #a9ea35;
+        border-radius: 12px;
+        transform: translateY(-4px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="progress-wrapper">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div class="onboarding-container" id="form-container">
+      <!-- Step 1 -->
+      <div class="step active" id="step-1">
+        <h1>What should we call you?</h1>
+        <p class="subtitle">Keep it personal.</p>
+        <div class="input-group" id="group-fname">
+          <input type="text" id="fname" placeholder=" " autofocus />
+          <label>First Name *</label>
+        </div>
+        <div class="error-text" id="error-fname">Only letters allowed.</div>
+        <button class="btn-primary" onclick="handleNext(1, event)">
+          Get Started
+        </button>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step" id="step-2">
+        <h1>Lock it in.</h1>
+        <p class="subtitle">Enter your email to secure your spot.</p>
+        <div class="input-group" id="group-email">
+          <input type="email" id="email" placeholder=" " />
+          <label>E-mail address *</label>
+        </div>
+        <div class="error-text" id="error-email">
+          Please enter a valid email.
+        </div>
+        <button class="btn-primary" onclick="handleNext(2, event)">
+          Continue
+        </button>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step" id="step-3">
+        <h1>Where are you based?</h1>
+        <p class="subtitle">
+          City or campus. We're launching in Atlanta and Austin first.
+        </p>
+        <div class="input-group" id="group-location">
+          <input type="text" id="location" placeholder=" " />
+          <label>Location *</label>
+        </div>
+        <div class="error-text" id="error-location">
+          This field is required.
+        </div>
+        <button class="btn-primary" onclick="handleNext(3, event)">
+          Continue
+        </button>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step" id="step-4">
+        <h1>Which one are you?</h1>
+        <p class="subtitle" style="margin-bottom: 32px">
+          Select your player type.
+        </p>
+
+        <button class="choice-btn" onclick="selectType(this)">
+          I want to get out more but never know how to start
+        </button>
+        <button class="choice-btn" onclick="selectType(this)">
+          I'm new somewhere and trying to build a life here
+        </button>
+        <button class="choice-btn" onclick="selectType(this)">
+          I'm already out there — I just want to document it better
+        </button>
+        <button
+          class="choice-btn"
+          id="other-type-btn"
+          onclick="activateOther('type', this)"
+        >
+          <span>Other...</span>
+          <input
+            type="text"
+            class="other-choice-input"
+            placeholder="Type your own..."
+            onblur="deactivateOther('type', this.parentElement)"
+          />
+        </button>
+
+        <div class="error-text" id="error-type" style="margin-top: 12px">
+          Please select an option.
+        </div>
+        <button
+          class="btn-primary"
+          style="margin-top: 16px"
+          onclick="handleNext(4, event)"
+        >
+          Continue
+        </button>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step" id="step-5">
+        <h1>How bad is it?</h1>
+        <p class="subtitle" style="margin-bottom: 32px">
+          Average daily screen time.
+        </p>
+
+        <button class="choice-btn" onclick="selectScreen(this)">
+          Under 3hrs
+        </button>
+        <button class="choice-btn" onclick="selectScreen(this)">3–5hrs</button>
+        <button class="choice-btn" onclick="selectScreen(this)">5–7hrs</button>
+        <button
+          class="choice-btn"
+          id="other-screen-btn"
+          onclick="activateOther('screen', this)"
+        >
+          <span>Other...</span>
+          <input
+            type="text"
+            class="other-choice-input"
+            placeholder="e.g. 10+ hours"
+            onblur="deactivateOther('screen', this.parentElement)"
+          />
+        </button>
+
+        <div class="error-text" id="error-screen" style="margin-top: 12px">
+          Please select an option.
+        </div>
+        <button
+          class="btn-primary"
+          style="margin-top: 16px"
+          onclick="handleNext(5, event)"
+        >
+          Submit Mission
+        </button>
+        <div class="terms">
+          By connecting to VIRL you agree to our Terms of use and Privacy
+          Policy.
+        </div>
+      </div>
+
+      <!-- End Screen -->
+      <div class="step" id="step-end">
+        <h1>Your mission begins at launch.</h1>
+        <p class="subtitle">We'll find you.</p>
+        <a
+          href="index.html"
+          class="btn-primary"
+          style="display: block; text-decoration: none; text-align: center;"
+          >Back to Base</a
+        >
+
+        <div class="social-pills">
+          <a href="" class="social-pill">Instagram</a>
+          <a href="#" class="social-pill">X</a>
+          <a href="https://discord.gg/z64Uqu3dJs" class="social-pill">Discord</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const user_data = {};
+      const totalSteps = 5;
+
+      function updateProgress(step) {
+        const progressBar = document.getElementById("progress-bar");
+        const progress = (step / totalSteps) * 100;
+        progressBar.style.width = progress + "%";
+
+        // Trigger particles at the tip of the seeker
+        if (step > 0) {
+          setTimeout(() => {
+            const rect = progressBar.getBoundingClientRect();
+            const tipX = rect.left + rect.width;
+            const tipY = rect.top + rect.height / 2;
+            createParticles(tipX, tipY, 8); // Fewer particles for progress bar
+          }, 400); // Wait for transition
+        }
+      }
+
+      function createParticles(x, y, count = 20) {
+        const colors = ["#ff5100", "#bfff4d", "#4285f4", "#FFC800", "#6b58ff"];
+        for (let i = 0; i < count; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+          const size = Math.random() * 8 + 4;
+          particle.style.width = size + "px";
+          particle.style.height = size + "px";
+          particle.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+
+          const destinationX = (Math.random() - 0.5) * 300;
+          const destinationY = (Math.random() - 0.5) * 300;
+
+          particle.style.left = x + "px";
+          particle.style.top = y + "px";
+
+          document.body.appendChild(particle);
+
+          const animation = particle.animate(
+            [
+              { transform: "translate(0, 0) scale(1)", opacity: 1 },
+              {
+                transform: `translate(${destinationX}px, ${destinationY}px) scale(0)`,
+                opacity: 0,
+              },
+            ],
+            {
+              duration: 1000 + Math.random() * 500,
+              easing: "cubic-bezier(0, .9, .57, 1)",
+              delay: Math.random() * 100,
+            },
+          );
+
+          animation.onfinish = () => particle.remove();
+        }
+      }
+
+      function showError(id, msg) {
+        const group = document.getElementById("group-" + id);
+        const err = document.getElementById("error-" + id);
+        if (group) group.classList.add("error");
+        if (err) {
+          err.innerText = msg;
+          err.style.display = "block";
+        }
+      }
+
+      function hideError(id) {
+        const group = document.getElementById("group-" + id);
+        const err = document.getElementById("error-" + id);
+        if (group) group.classList.remove("error");
+        if (err) err.style.display = "none";
+      }
+
+      function handleNext(current, event) {
+        let isValid = true;
+        hideError("fname");
+        hideError("email");
+        hideError("location");
+        hideError("type");
+        hideError("screen");
+
+        if (current === 1) {
+          const val = document.getElementById("fname").value.trim();
+          if (!val) {
+            showError("fname", "Name is required.");
+            isValid = false;
+          } else if (/[^a-zA-Z\s]/.test(val)) {
+            showError("fname", "Only letters and spaces allowed.");
+            isValid = false;
+          } else {
+            user_data.name = val;
+          }
+        } else if (current === 2) {
+          const val = document.getElementById("email").value.trim();
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!val) {
+            showError("email", "Email is required.");
+            isValid = false;
+          } else if (!emailRegex.test(val)) {
+            showError("email", "Please enter a valid email address.");
+            isValid = false;
+          } else {
+            user_data.email = val;
+          }
+        } else if (current === 3) {
+          const val = document.getElementById("location").value.trim();
+          if (!val) {
+            showError("location", "Location is required.");
+            isValid = false;
+          } else {
+            user_data.location = val;
+          }
+        } else if (current === 4) {
+          const otherBtn = document.getElementById("other-type-btn");
+          const otherInput = otherBtn.querySelector("input");
+          if (otherBtn.classList.contains("selected")) {
+            const trimmed = otherInput.value.trim();
+            if (trimmed.length < 3) {
+              showError("type", "Please provide more detail.");
+              isValid = false;
+            } else {
+              user_data.type = trimmed;
+            }
+          } else if (!user_data.type) {
+            showError("type", "Please select an option.");
+            isValid = false;
+          }
+        } else if (current === 5) {
+          const otherBtn = document.getElementById("other-screen-btn");
+          const otherInput = otherBtn.querySelector("input");
+          if (otherBtn.classList.contains("selected")) {
+            const trimmed = otherInput.value.trim();
+            if (trimmed.length < 1) {
+              showError("screen", "Please enter your screen time.");
+              isValid = false;
+            } else {
+              user_data.screen_time = trimmed;
+            }
+          } else if (!user_data.screen_time) {
+            showError("screen", "Please select an option.");
+            isValid = false;
+          }
+          if (isValid) {
+            console.log("Submitting:", user_data);
+            // Trigger particles only on final submission
+            if (event) createParticles(event.clientX, event.clientY, 40);
+          }
+        }
+
+        if (isValid) {
+          nextStep(current);
+        }
+      }
+
+      function nextStep(current) {
+        document.getElementById("step-" + current).classList.remove("active");
+
+        setTimeout(() => {
+          const nextNode = current === 5 ? "step-end" : "step-" + (current + 1);
+          document.getElementById(nextNode).classList.add("active");
+          updateProgress(current);
+
+          const nextInput = document.querySelector(
+            "#" + nextNode + " input:not(.other-choice-input)",
+          );
+          if (nextInput) nextInput.focus();
+        }, 100);
+      }
+
+      function selectType(btn) {
+        document.querySelectorAll("#step-4 .choice-btn").forEach((b) => {
+          b.classList.remove("selected");
+          b.classList.remove("other-active");
+        });
+        btn.classList.add("selected");
+        if (!btn.id.includes("other")) {
+          user_data.type = btn.innerText;
+          hideError("type");
+        }
+      }
+
+      function selectScreen(btn) {
+        document.querySelectorAll("#step-5 .choice-btn").forEach((b) => {
+          b.classList.remove("selected");
+          b.classList.remove("other-active");
+        });
+        btn.classList.add("selected");
+        if (!btn.id.includes("other")) {
+          user_data.screen_time = btn.innerText;
+          hideError("screen");
+        }
+      }
+
+      function activateOther(type, btn) {
+        if (type === "type") selectType(btn);
+        else selectScreen(btn);
+
+        btn.classList.add("other-active");
+        const input = btn.querySelector("input");
+        input.focus();
+      }
+
+      function deactivateOther(type, btn) {
+        const input = btn.querySelector("input");
+        if (!input.value.trim()) {
+          btn.classList.remove("other-active");
+          // If they didn't type anything, keep it selected but showing "Other..."
+        } else {
+          // Keep active and selected if content exists
+          if (type === "type") user_data.type = input.value;
+          else user_data.screen_time = input.value;
+          hideError(type);
+        }
+      }
+
+      // Handle Enter key for inputs
+      document.querySelectorAll("input").forEach((input) => {
+        input.addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            if (this.classList.contains("other-choice-input")) {
+              this.blur();
+              return;
+            }
+            const stepDiv = this.closest(".step");
+            const stepNum = parseInt(stepDiv.id.split("-")[1]);
+            handleNext(stepNum);
+          }
+        });
+      });
+
+      updateProgress(0);
+    </script>
+  </body>
+</html>

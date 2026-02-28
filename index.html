@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Navigation Wrapper -->
+  <header class="navbar-wrapper">
+    <!-- Desktop Nav -->
+    <nav class="desktop-nav">
+      <div class="pill-body">
+        <div class="logo-box">
+          <svg viewBox="0 0 24 24" class="logo-svg" fill="#111">
+            <path d="M12 2C7.58 2 4 5.58 4 10v11l2-2l2 2l2-2l2 2l2-2l2 2l2-2l2 2V10c0-4.42-3.58-8-8-8z" />
+            <path stroke="#ff5100" stroke-width="2.5" stroke-linecap="round" fill="none" d="M8 10c0.5-0.5 1.5-0.5 2 0 M14 10c0.5-0.5 1.5-0.5 2 0" />
+          </svg>
+        </div>
+        
+        <div class="nav-links-wrapper" id="nav-links-wrapper">
+          <div class="nav-hover-highlight" id="nav-hover-highlight"></div>
+          <div class="nav-highlight" id="nav-highlight"></div>
+          <a href="#mission" class="nav-link active" data-index="0">Mission</a>
+          <a href="#gameplay" class="nav-link" data-index="1">Gameplay</a>
+          <a href="#intel" class="nav-link" data-index="2">Intel</a>
+        </div>
+        
+        <!-- <div class="divider"></div>
+        <a href="#" class="nav-link dropdown text-muted">
+          Products
+          <svg class="chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </a> -->
+      </div>
+      <a href="waitlist.html" class="launch-btn">Join Waitlist</a>
+    </nav>
+
+    <!-- Mobile Nav -->
+    <nav class="mobile-nav">
+      <div class="pill-body" id="mobile-pill">
+        <!-- The logo box becomes the close button -->
+        <div class="logo-box" id="mobile-logo-box">
+          <svg viewBox="0 0 24 24" class="logo-svg ghost-icon" id="mobile-ghost" fill="#111">
+            <path d="M12 2C7.58 2 4 5.58 4 10v11l2-2l2 2l2-2l2 2l2-2l2 2l2-2l2 2V10c0-4.42-3.58-8-8-8z" />
+            <path stroke="#ff5100" stroke-width="2.5" stroke-linecap="round" fill="none" d="M8 10c0.5-0.5 1.5-0.5 2 0 M14 10c0.5-0.5 1.5-0.5 2 0" />
+          </svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="close-icon" id="mobile-close-icon" style="display: none; opacity: 0;">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </div>
+        <button class="hamburger" id="hamburger-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="hamburger-stroke" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 9h16M4 15h16"/></svg>
+        </button>
+      </div>
+      <a href="waitlist.html" class="launch-btn" id="launch-btn-mobile">Join Waitlist</a>
+    </nav>
+  </header>
+
+  <!-- Mobile Drawer Overlay -->
+  <div class="drawer-overlay" id="drawer-overlay">
+    <div class="drawer-box">
+      <a href="waitlist.html" class="drawer-project">Join Waitlist</a>
+      <div class="drawer-links">
+        <a href="#mission" class="drawer-nav-link">Mission</a>
+        <a href="#gameplay" class="drawer-nav-link">Gameplay</a>
+        <a href="#intel" class="drawer-nav-link">Intel</a>
+      </div>
+      <div class="drawer-bottom-line"></div>
+    </div>
+    <!-- Removed original drawer-close button since the logo-box morphs into it -->
+  </div>
+
+  <main>
+    <!-- Section 1: The Dark Hero -->
+    <section class="section-dark" id="mission">
+      <div class="hero-text-content">
+        <h1 class="gsap-hero-title text-white" style="font-size: 8vw;">Your life is the <br>ultimate game</h1>
+        <p class="gsap-hero-subtitle text-white">Start playing now.</p>
+        
+        <a href="waitlist.html" class="hero-btn-green">Join the Waitlist</a>
+      </div>
+      
+      <!-- Colorful Shapes Container (Disabled) -->
+      <!-- 
+      <div class="colorful-shapes-container">
+        <div class="gsap-shape"><div class="colorful-shape bg-green gsap-inner-shape"><svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.834a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div></div>
+        <div class="gsap-shape"><div class="colorful-shape bg-yellow gsap-inner-shape"><svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div></div>
+        <div class="gsap-shape"><div class="colorful-shape bg-blue gsap-inner-shape"><svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.501 5.814a3.016 3.016 0 0 0 2.122 2.136c1.872.55 9.377.55 9.377.55s7.505 0 9.377-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></div></div>
+        <div class="gsap-shape"><div class="colorful-shape bg-orange gsap-inner-shape"><svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 15.68a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.08z"/></svg></div></div>
+        <div class="gsap-shape"><div class="colorful-shape bg-purple round gsap-inner-shape"><svg viewBox="0 0 24 24" fill="currentColor" width="48" height="48"><path d="M21.58 6.92l-1.07-2.61a2.84 2.84 0 0 0-2.67-1.74H6.16A2.84 2.84 0 0 0 3.49 4.3l-1.07 2.6A6.16 6.16 0 0 0 2 9.24v3.13c0 2.21 1.79 4 4 4h0a4 4 0 0 0 3.84-2.88L10.3 12h3.4l.43 1.49a4 4 0 0 0 3.84 2.88h0c2.21 0 4-1.79 4-4V9.24a6.16 6.16 0 0 0-.42-2.32zM8.5 10H7v1.5a.5.5 0 0 1-1 0V10H4.5a.5.5 0 0 1 0-1H6V7.5a.5.5 0 0 1 1 0V9h1.5a.5.5 0 0 1 0 1zm7.5 1a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm2-2a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg></div></div>
+      </div>
+      -->
+    </section>
+
+    <!-- Blank spacing so icons can shrink properly isolated before light section enters -->
+    <div style="height: 100vh; background-color: #111;"></div>
+
+    <!-- Section 2: Scrollytelling Statistics Sequence -->
+    <section class="problem-sticky-wrapper" id="gameplay">
+      <div class="expanding-container" id="expanding-container">
+        
+        <div class="stats-sequence-layout-split">
+          
+          <!-- LEFT: The Cards & Eventually the Intro -->
+          <div class="sequence-left-col">
+            <div id="cards-formation-container">
+              <!-- SEQUENCE 1: THE DIGITAL DIET (PURPLE) -->
+              <div class="stat-sequence-item" id="seq-1" style="--accent: #8080ff; --bg-light: #f0f0ff;">
+                <div class="summary-card">
+                  <div class="summary-info">
+                    <div class="summary-tag">The Digital Diet</div>
+                    <div class="summary-main">Screen Dominance</div>
+                  </div>
+                  <div class="summary-icon-box">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+                  </div>
+                </div>
+                <div class="detail-card">
+                  <div class="browsing-content">
+                    <div class="donut-display">
+                      <svg class="donut-svg" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="40" class="donut-bg" />
+                        <circle cx="50" cy="50" r="40" class="donut-segment" id="donut-purple" style="stroke: #8080ff;" />
+                        <circle cx="50" cy="50" r="40" class="donut-segment" id="donut-green" style="stroke: #a9ea35;" />
+                        <circle cx="50" cy="50" r="40" class="donut-segment" id="donut-orange" style="stroke: #ff6a20;" />
+                        <circle cx="50" cy="50" r="40" class="donut-segment" id="donut-yellow" style="stroke: #ffc107;" />
+                      </svg>
+                    </div>
+                    <div class="donut-text-virl">
+                      <p class="stat-main-text">Gen Z averages <strong>6+ hours</strong> of daily screen time, more than any other generation.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SEQUENCE 2: THE CONNECTION GAP (GREEN) -->
+              <div class="stat-sequence-item" id="seq-2" style="--accent: #a9ea35; --bg-light: #f2fbe6;">
+                <div class="summary-card">
+                  <div class="summary-info">
+                    <div class="summary-tag">The Connection Gap</div>
+                    <div class="summary-main">Social Isolation</div>
+                  </div>
+                  <div class="summary-icon-box">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                  </div>
+                </div>
+                <div class="detail-card">
+                  <div class="bar-chart-content">
+                    <div class="bar-row">
+                      <span>Lonely</span>
+                      <div class="bar-wrap"><div class="bar-fill black" id="bar-lonely" style="width: 67%;">67%</div></div>
+                    </div>
+                    <p class="stat-main-text" style="padding: 10px 0 0 0;"><strong>67%</strong> of Gen Z report feeling chronically lonely or socially anxious.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SEQUENCE 3: THE GREAT DECLINE (YELLOW) -->
+              <div class="stat-sequence-item" id="seq-3" style="--accent: #ffc107; --bg-light: #fff9e6;">
+                <div class="summary-card">
+                  <div class="summary-info">
+                    <div class="summary-tag">The Great Decline</div>
+                    <div class="summary-main">IRL Interaction</div>
+                  </div>
+                  <div class="summary-icon-box">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                  </div>
+                </div>
+                <div class="detail-card">
+                  <div class="line-chart-content">
+                    <div class="graph-title">Time spent with friends</div>
+                    <div class="svg-container">
+                      <svg class="line-svg" viewBox="0 0 400 100">
+                        <!-- Subtle Grid Lines -->
+                        <line x1="0" y1="20" x2="400" y2="20" class="grid-line" />
+                        <line x1="0" y1="50" x2="400" y2="50" class="grid-line" />
+                        <line x1="0" y1="80" x2="400" y2="80" class="grid-line" />
+                        
+                        <!-- Trend Path -->
+                        <path d="M0,20 L100,30 L200,60 L300,75 L400,90" id="social-decline-path" />
+                        <circle cx="400" cy="90" r="5" id="arrowhead-dot" />
+                      </svg>
+                    </div>
+                    <div class="time-markers">
+                      <span class="time-marker">2006</span>
+                      <span class="time-marker">2016</span>
+                      <span class="time-marker">2026</span>
+                    </div>
+                    <p class="stat-main-text" style="padding: 10px 0 0 0;">In-person interaction has dropped by <strong>70%</strong> since 2006.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SEQUENCE 4: MODERN SYMPTOMS (PEACH) -->
+              <div class="stat-sequence-item" id="seq-4" style="--accent: #ffccaa; --bg-light: #fff8f5;">
+                <div class="summary-card">
+                  <div class="summary-info">
+                    <div class="summary-tag">Modern Symptoms</div>
+                    <div class="summary-main">Cultural Fallout</div>
+                  </div>
+                  <div class="summary-icon-box">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                  </div>
+                </div>
+                <div class="detail-card">
+                  <div class="dictionary-content">
+                    <h2 class="word-title">"Brain rot"</h2>
+                    <p class="word-definition">Mental deterioration from chronic low-quality digital consumption.</p>
+                    <p class="stat-main-text" style="padding: 5px 0 0 0; font-size: 11px;">Oxford's <strong>Word of the Year</strong>, 2024.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SUBSECTION 2: INTRODUCING VIRL (Now on the left) -->
+            <div id="virl-intro-block" class="virl-scrolly-text-block">
+              <h1 class="virl-intro-title">Introducing VIRL.</h1>
+              <div class="virl-intro-accent"></div>
+              <p class="virl-intro-desc">
+                The first social platform designed to be deleted. We don't want your time; we want your attention back where it belongs.
+              </p>
+            </div>
+
+            <!-- SUBSECTION 3: MISSIONS (Missions Start) -->
+            <div id="virl-missions-block" class="virl-scrolly-text-block">
+              <h1 class="virl-intro-title">Real World Missions.</h1>
+              <div class="virl-intro-accent"></div>
+              <p class="virl-intro-desc">
+                Your phone is a tool, not a destination. VIRL gives you reasons to look up: coffee shop quests, park explorations, and spontaneous social prompts.
+              </p>
+            </div>
+
+            <!-- SUBSECTION 4: STREAKS (Expanded Circle 2) -->
+            <div id="virl-streaks-block" class="virl-scrolly-text-block">
+              <h1 class="virl-intro-title">Build Your Streak.</h1>
+              <div class="virl-intro-accent"></div>
+              <p class="virl-intro-desc">
+                Consistency is key. Every day you choose life over infinity scroll, your flame grows. Keep it burning to unlock exclusive community rewards.
+              </p>
+            </div>
+
+            <!-- SUBSECTION 5: BADGES (Expanded Circle 3) -->
+            <div id="virl-badges-block" class="virl-scrolly-text-block">
+              <h1 class="virl-intro-title">Earn Your Status.</h1>
+              <div class="virl-intro-accent"></div>
+              <p class="virl-intro-desc">
+                Collect physical and digital artifacts of your adventures. From "Early Riser" to "Community Pillar," every badge represents a real-world achievement.
+              </p>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDE CONTENT -->
+          <div class="sequence-right-col" style="position: relative;">
+            <!-- CURRENT PROBLEM TEXT -->
+            <div id="problem-text-block">
+              <h2 class="problem-summary-title">This wasn't <br/> meant to happen.</h2>
+              <div class="virl-intro-accent"></div>
+              <p class="problem-summary-desc">
+                You were handed a world of connection and ended up more isolated than any generation before you. The apps you use were designed specifically to make sure you didn't notice. <br>But we did.
+              </p>
+            </div>
+
+            <!-- PREMIUM PHONE OBJECT (Now on the right) -->
+            <div class="virl-phone-wrapper" id="intro-phone-wrapper" style="position: absolute; top: 40%; right: 0;">
+              <!-- Animated Sparkles (4-point stars) -->
+              <div class="sparkle sp-1">
+                <svg viewbox="0 0 24 24"><path d="M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10L12 2Z" fill="#ffc107" stroke="#111" stroke-width="1"/></svg>
+              </div>
+              <div class="sparkle sp-2">
+                <svg viewbox="0 0 24 24"><path d="M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10L12 2Z" fill="#8080ff" stroke="#111" stroke-width="1"/></svg>
+              </div>
+              <div class="sparkle sp-3">
+                <svg viewbox="0 0 24 24"><path d="M12 2L14 10L22 12L14 14L12 22L10 14L2 12L10 10L12 2Z" fill="#a9ea35" stroke="#111" stroke-width="1"/></svg>
+              </div>
+
+              <!-- MISSION OBJECTS (Zoom out of phone as circles, then expand) -->
+              <div class="mission-item-container" id="mission-item-1">
+                <div class="mission-circle-mode" id="mission-pill-1">
+                  <div class="circle-header">
+                    <div class="circle-icon-inner">
+                      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.5 17.5L3 6M10 21L3 6M17.5 14.5L6 3M21 10L6 3" stroke-linecap="round"/></svg>
+                    </div>
+                    <div class="circle-detail-content">
+                      <div class="mission-tag">MISSION</div>
+                      <div class="mission-name">The Park Path</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mission-detail-body" id="mission-body-1">
+                  <div style="font-size: 10px; font-weight: 800; margin-bottom: 4px; opacity: 0.7;">PROGRESS</div>
+                  <div style="width: 100%; height: 12px; background: #eee; border: 1.5px solid #000; border-radius: 4px; margin-bottom: 12px; overflow: hidden;">
+                    <div style="width: 65%; height: 100%; background: #ffc107;"></div>
+                  </div>
+                  <div style="display: flex; gap: 6px; justify-content: center;">
+                     <div style="width: 24px; height: 24px; border: 1.5px solid #000; border-radius: 4px; background: #ffc107; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900;">1</div>
+                     <div style="width: 24px; height: 24px; border: 1.5px solid #000; border-radius: 4px; background: #ffc107; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900;">2</div>
+                     <div style="width: 24px; height: 24px; border: 1.5px solid #000; border-radius: 4px; background: #eee;"></div>
+                  </div>
+                  <button class="claim-reward-btn">Claim Reward</button>
+                </div>
+              </div>
+              
+              <div class="mission-item-container" id="mission-item-2">
+                <div class="mission-circle-mode" id="mission-pill-2">
+                  <div class="circle-header">
+                    <div class="circle-icon-inner">
+                       <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3 2.5.5 4.5 2.5 4.5 5.5a4 4 0 1 1-8 0c0-1.5.5-3 1.5-4.5.5 2.5 2 3.5 1 4.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="circle-detail-content">
+                      <div class="mission-tag">STREAK</div>
+                      <div class="mission-name">3 Day No-Scroll</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mission-detail-body" id="mission-body-2">
+                  <div class="streak-visual-container" style="padding-top: 5px;">
+                    <svg class="streak-flame-icon" viewBox="0 0 100 100">
+                      <path d="M50 5 C50 5 85 40 85 70 C85 90 70 100 50 100 C30 100 15 90 15 70 C15 40 50 5 50 5Z" fill="#FF5100" />
+                      <path d="M50 30 C50 30 70 55 70 75 C70 85 62 90 50 90 C38 90 30 85 30 75 C30 55 50 30 50 30Z" fill="#FFC800" />
+                    </svg>
+                    <div style="font-size: 14px; font-weight: 900; margin-top: -5px;">4 DAY STREAK</div>
+                    <div class="streak-progress-dots">
+                      <div class="streak-dot active"></div>
+                      <div class="streak-dot active"></div>
+                      <div class="streak-dot active"></div>
+                      <div class="streak-dot active"></div>
+                      <div class="streak-dot"></div>
+                      <div class="streak-dot"></div>
+                      <div class="streak-dot"></div>
+                    </div>
+                  </div>
+                  <button class="claim-reward-btn">Claim Reward</button>
+                </div>
+              </div>
+
+              <div class="mission-item-container" id="mission-item-3">
+                <div class="mission-circle-mode" id="mission-pill-3">
+                  <div class="circle-header">
+                    <div class="circle-icon-inner">
+                      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="circle-detail-content">
+                      <div class="mission-tag">BADGE</div>
+                      <div class="mission-name">IRL Explorer</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mission-detail-body" id="mission-body-3">
+                  <div class="badge-sleepwalker-visual" style="margin-top: 10px;"></div>
+                  <div style="text-align: center; margin-top: 8px;">
+                    <div style="font-size: 12px; font-weight: 900;">SLEEPWALKER</div>
+                    <div style="font-size: 9px; font-weight: 700; opacity: 0.6;">30 NIGHT MISSIONS</div>
+                  </div>
+                  <button class="claim-reward-btn">Claim Reward</button>
+                </div>
+              </div>
+
+              <div class="virl-phone-body">
+                <div class="virl-phone-screen-frame">
+                  <div class="virl-phone-screen">
+                    <div class="virl-app-icon">
+                      <svg viewbox="0 0 100 100" class="ghost-svg">
+                        <rect x="10" y="10" width="80" height="80" rx="20" fill="#FF6B35" stroke="#111" stroke-width="1.5" />
+                        <path d="M30 45 C30 25, 70 25, 70 45 L70 70 Q65 65, 60 70 Q55 75, 50 70 Q45 65, 40 70 Q35 75, 30 70 Z" fill="#111" />
+                        <path d="M40 45 Q45 40 50 45" fill="none" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M55 45 Q60 40 65 45" fill="none" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <!-- 3D Depths -->
+                <div class="virl-phone-side"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+
+
+
+
+    <!-- Section 3: Intel -->
+    <section class="section-dark" id="intel" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: #111;">
+      <h2 class="text-white gsap-title" style="font-size: 4vw; border: 1px dashed rgba(255,255,255,0.2); padding: 48px; border-radius: 20px;">The VIRL Solution<br><span style="font-size: 1.5vw; opacity: 0.6; font-weight: 400;">Gamifying your real life connection.</span></h2>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
