@@ -10,6 +10,44 @@ document.addEventListener('DOMContentLoaded', () => {
   let menuTl = gsap.timeline({ paused: true, reversed: true });
   let sequenceTl; // Globally declare for nav access
 
+  // Manual Word & Letter Split (Premium & Responsive)
+  const splitLetters = (el) => {
+    if(!el) return;
+    const html = el.innerHTML;
+    el.innerHTML = "";
+    
+    // Split by <br> tags first
+    const lines = html.split(/<br\s*\/?>/i);
+    
+    lines.forEach((line, lineIndex) => {
+      // Split line into words
+      const words = line.trim().split(/\s+/);
+      
+      words.forEach((word) => {
+        const wordSpan = document.createElement("span");
+        wordSpan.style.display = "inline-block";
+        wordSpan.style.whiteSpace = "nowrap"; // Keep the word whole
+        
+        word.split("").forEach(char => {
+          const span = document.createElement("span");
+          span.innerText = char;
+          span.className = "letter";
+          span.style.display = "inline-block";
+          wordSpan.appendChild(span);
+        });
+        
+        el.appendChild(wordSpan);
+        // Add a standard space after each word
+        el.appendChild(document.createTextNode(" "));
+      });
+      
+      // Restore <br> if it's not the last line
+      if (lineIndex < lines.length - 1) {
+        el.appendChild(document.createElement("br"));
+      }
+    });
+  }
+
   // 1. Shift the navbar-wrapper UP solidly to ensure the close button avoids any overlapping visual weight
   menuTl.to(".navbar-wrapper", {
     y: -16, duration: 0.4, ease: "back.out(1.2)"
@@ -79,6 +117,109 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape' && !menuTl.reversed()) toggleMenu();
   });
 
+  // ---------- HERO SECTION ANIMATIONS ----------
+  const heroTitle = document.querySelector('.gsap-hero-title');
+  const heroSubtitle = document.querySelector('.gsap-hero-subtitle');
+  const heroBtn = document.querySelector('.hero-btn-green');
+  const heroPills = gsap.utils.toArray('.hero-pill');
+
+  if (heroTitle) splitLetters(heroTitle);
+
+  const heroTl = gsap.timeline({ delay: 0.5 });
+
+  heroTl.from('.gsap-hero-title .letter', {
+    y: 100,
+    opacity: 0,
+    stagger: 0.02,
+    duration: 1.2,
+    ease: "back.out(1.7)"
+  })
+  .from(heroSubtitle, {
+    y: 30,
+    opacity: 0,
+    duration: 1,
+    ease: "power3.out"
+  }, "-=0.8")
+  .from(heroBtn, {
+    scale: 0.8,
+    opacity: 0,
+    duration: 0.8,
+    ease: "back.out(2)"
+  }, "-=0.6")
+  .from(heroPills, {
+    scale: 0,
+    opacity: 0,
+    stagger: 0.1,
+    duration: 1.2,
+    ease: "elastic.out(1, 0.5)",
+    rotation: () => gsap.utils.random(-20, 20)
+  }, "-=1.2");
+
+  // Floating animation for pills
+  heroPills.forEach((pill, i) => {
+    gsap.to(pill, {
+      y: "random(-15, 15)",
+      x: "random(-10, 10)",
+      duration: "random(2, 4)",
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+  });
+
+  // Parallax effect on pills
+  window.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 40;
+    const y = (e.clientY / window.innerHeight - 0.5) * 40;
+    
+    gsap.to(heroPills, {
+      x: (i) => x * (0.5 + Math.random()),
+      y: (i) => y * (0.5 + Math.random()),
+      duration: 1,
+      ease: "power2.out",
+      overwrite: "auto"
+    });
+  });
+
+  // Genuinely Animated Hover Effect for Hero Pills
+  heroPills.forEach(pill => {
+    pill.addEventListener('mouseenter', () => {
+      gsap.to(pill, { 
+        scale: 1.15, 
+        rotation: 0, 
+        duration: 0.4, 
+        ease: "back.out(2)",
+        overwrite: true 
+      });
+    });
+    pill.addEventListener('mouseleave', () => {
+      gsap.to(pill, { 
+        scale: 1, 
+        rotation: gsap.utils.random(-15, 15), 
+        duration: 0.5, 
+        ease: "elastic.out(1, 0.6)",
+        overwrite: true
+      });
+    });
+  });
+
+  // ScrollTrigger for pills fade out as you scroll
+  // Lock opacity and Y to scroll progress for precise "tracking"
+  gsap.to(heroPills, {
+    scrollTrigger: {
+      trigger: "#mission",
+      start: "bottom bottom", 
+      end: "bottom top", 
+      scrub: 0.5,
+      invalidateOnRefresh: true,
+      onEnterBack: () => gsap.to(heroPills, { opacity: 1, stagger: 0.05, overwrite: true })
+    },
+    opacity: 0,
+    y: -80,
+    stagger: 0.05,
+    ease: "none"
+  });
+
   // ---------- HOVER & ACTIVE HIGHLIGHT LOGIC ----------
   const navLinks = document.querySelectorAll('.nav-links-wrapper .nav-link');
   const activeHighlight = document.getElementById('nav-highlight');
@@ -137,7 +278,12 @@ document.addEventListener('DOMContentLoaded', () => {
           target = gameplaySect.offsetTop + (gameplaySect.offsetHeight * 0.45);
         }
       } else if (index === 2) {
-        target = document.querySelector('#intel').offsetTop;
+        target = document.querySelector('.faq-scrolly-wrapper').offsetTop;
+      }
+      
+      // Handle the new sticky wrapper case if needed
+      if (index === 2 && !target) {
+        target = document.querySelector('#faq').offsetTop;
       }
 
       gsap.to(window, {
@@ -248,43 +394,6 @@ document.addEventListener('DOMContentLoaded', () => {
       onEnterBack: () => updateNavHighlight(2)
     });
 
-    // 0. Manual Word & Letter Split for Right Col Text (Premium & Responsive)
-    const splitLetters = (el) => {
-      if(!el) return;
-      const html = el.innerHTML;
-      el.innerHTML = "";
-      
-      // Split by <br> tags first
-      const lines = html.split(/<br\s*\/?>/i);
-      
-      lines.forEach((line, lineIndex) => {
-        // Split line into words
-        const words = line.trim().split(/\s+/);
-        
-        words.forEach((word) => {
-          const wordSpan = document.createElement("span");
-          wordSpan.style.display = "inline-block";
-          wordSpan.style.whiteSpace = "nowrap"; // Keep the word whole
-          
-          word.split("").forEach(char => {
-            const span = document.createElement("span");
-            span.innerText = char;
-            span.className = "letter";
-            span.style.display = "inline-block";
-            wordSpan.appendChild(span);
-          });
-          
-          el.appendChild(wordSpan);
-          // Add a standard space after each word
-          el.appendChild(document.createTextNode(" "));
-        });
-        
-        // Restore <br> if it's not the last line
-        if (lineIndex < lines.length - 1) {
-          el.appendChild(document.createElement("br"));
-        }
-      });
-    }
     const probTitle = document.querySelector('.problem-summary-title');
     const probDesc = document.querySelector('.problem-summary-desc');
     const introTitle = document.querySelector('#virl-intro-block .virl-intro-title');
@@ -347,9 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const items = [1, 2, 3, 4];
     
-    // ... existing card formation code ...
-
-    // 1. APPEARING TRANSITION: Fade in and slide up the whole split layout
+    // 2. INITIAL PHASE: Fade in the split layout and the initial Problem text
     sequenceTl.to(".stats-sequence-layout-split", {
       opacity: 1,
       y: 0,
@@ -357,7 +464,15 @@ document.addEventListener('DOMContentLoaded', () => {
       ease: "power2.out"
     });
 
-    // 2. INITIAL PHASE: Expand summary cards (pills) width
+    sequenceTl.to("#problem-text-block", {
+      autoAlpha: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out",
+      clearProps: "transform" // Critical: Ensures Flexbox takes back over for centering after opacity reveal
+    }, "-=0.8");
+
+    // 3. PILLS PHASE: Expand summary cards (pills) width
     sequenceTl.to(".summary-card", {
       width: "100%",
       stagger: 0.1,
@@ -520,7 +635,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 7. Reveal Intro Block (Better centered + Letter Stagger)
     sequenceTl.to("#virl-intro-block", {
-      opacity: 1,
+      autoAlpha: 1,
       pointerEvents: "auto",
       duration: 0.1
     }, "+=0.2");
@@ -568,7 +683,11 @@ document.addEventListener('DOMContentLoaded', () => {
     sequenceTl.to(".virl-intro-accent", { scaleX: 0, opacity: 0, duration: 0.5 }, missionSetupLabel);
 
     // 7. Coordinate layout: Shift entire right half down as we enter mission sequence
-    sequenceTl.to(".sequence-right-col", { y: 100, duration: 1.5, ease: "power2.inOut" }, missionSetupLabel);
+    // Only shift on desktop side-by-side
+    if (window.innerWidth > 1024) {
+      sequenceTl.to(".sequence-right-col", { y: 100, duration: 1.5, ease: "power2.inOut" }, missionSetupLabel);
+    }
+    
     sequenceTl.to(".virl-phone-body", {
       rotateX: 55, 
       rotateY: 0,
@@ -591,8 +710,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const stage1Label = "stage-1";
     
     // Fade in Stage 1 Text
-    sequenceTl.fromTo("#virl-missions-block", { opacity: 0, y: 30 }, { opacity: 1, y: -70, pointerEvents: "auto", duration: 0.2 }, stage1Label);
-    sequenceTl.fromTo("#virl-missions-block .letter", { opacity: 0, y: 20 }, { opacity: 1, y: -70, stagger: 0.005, duration: 0.8 }, stage1Label);
+    sequenceTl.fromTo("#virl-missions-block", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, pointerEvents: "auto", duration: 0.2 }, stage1Label);
+    sequenceTl.fromTo("#virl-missions-block .letter", { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.005, duration: 0.8 }, stage1Label);
 
     // Expand Icon 1: Pill Width then Body Height
     sequenceTl.to("#mission-pill-1", {
@@ -619,9 +738,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const stage2Label = "stage-2";
 
     // Text Swap
-    sequenceTl.to("#virl-missions-block .letter", { opacity: 0, y: -20, stagger: 0.003, duration: 0.5 }, stage2Label);
-    sequenceTl.fromTo("#virl-streaks-block", { opacity: 0, y: 30 }, { opacity: 1, y: -70, pointerEvents: "auto", duration: 0.2 }, stage2Label);
-    sequenceTl.fromTo("#virl-streaks-block .letter", { opacity: 0, y: 20 }, { opacity: 1, y: -70, stagger: 0.005, duration: 0.8 }, stage2Label);
+    sequenceTl.to("#virl-missions-block .letter", { opacity: 0, y: -15, stagger: 0.003, duration: 0.5 }, stage2Label);
+    sequenceTl.fromTo("#virl-streaks-block", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, pointerEvents: "auto", duration: 0.2 }, stage2Label);
+    sequenceTl.fromTo("#virl-streaks-block .letter", { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.005, duration: 0.8 }, stage2Label);
 
     // Collapse Icon 1 Body AND Pill
     sequenceTl.to("#mission-body-1", { height: 0, opacity: 0, paddingTop: 0, paddingBottom: 0, duration: 0.4 }, stage2Label);
@@ -653,9 +772,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const stage3Label = "stage-3";
 
     // Text Swap
-    sequenceTl.to("#virl-streaks-block .letter", { opacity: 0, y: -20, stagger: 0.003, duration: 0.5 }, stage3Label);
-    sequenceTl.fromTo("#virl-badges-block", { opacity: 0, y: 30 }, { opacity: 1, y: -70, pointerEvents: "auto", duration: 0.2 }, stage3Label);
-    sequenceTl.fromTo("#virl-badges-block .letter", { opacity: 0, y: 20 }, { opacity: 1, y: -70, stagger: 0.005, duration: 0.8 }, stage3Label);
+    sequenceTl.to("#virl-streaks-block .letter", { opacity: 0, y: -15, stagger: 0.003, duration: 0.5 }, stage3Label);
+    sequenceTl.fromTo("#virl-badges-block", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, pointerEvents: "auto", duration: 0.2 }, stage3Label);
+    sequenceTl.fromTo("#virl-badges-block .letter", { opacity: 0, y: 15 }, { opacity: 1, y: 0, stagger: 0.005, duration: 0.8 }, stage3Label);
 
     // Collapse Icon 2 Body AND Pill
     sequenceTl.to("#mission-body-2", { height: 0, opacity: 0, paddingTop: 0, paddingBottom: 0, duration: 0.4 }, stage3Label);
@@ -807,4 +926,217 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // ---------- GLOBAL BACKGROUND TRANSITION ----------
+  const navWrapper = document.querySelector('.navbar-wrapper');
+  const sections = [
+    { target: '.virl-hero', color: '#f5f5f0', navDark: false },
+    { target: '.expanding-container', color: '#f5f5f0', forceGreen: true }, 
+    { target: '.faq-scrolly-wrapper', color: '#111', navDark: true },
+    { target: '.virl-signup-landing', color: '#000', navDark: true },
+    { target: '.virl-final-section', color: '#f5f5f0', navDark: false },
+    { target: '.bento-footer', color: '#f5f5f0', navDark: false }
+  ];
+
+  sections.forEach((sec) => {
+    if (document.querySelector(sec.target)) {
+      ScrollTrigger.create({
+        trigger: sec.target,
+        start: "top 50%",
+        end: "bottom 50%",
+        onEnter: () => {
+          gsap.to('body', { backgroundColor: sec.color, duration: 0.8, ease: "power2.inOut" });
+          if (navWrapper) {
+            navWrapper.classList.toggle('is-dark', !!sec.navDark);
+            navWrapper.classList.toggle('force-green', !!sec.forceGreen);
+          }
+        },
+        onEnterBack: () => {
+          gsap.to('body', { backgroundColor: sec.color, duration: 0.8, ease: "power2.inOut" });
+          if (navWrapper) {
+            navWrapper.classList.toggle('is-dark', !!sec.navDark);
+            navWrapper.classList.toggle('force-green', !!sec.forceGreen);
+          }
+        },
+      });
+    }
+  });
+
+  // ---------- FAQ SECTION ANIMATIONS (Fixed Cross-Platform) ----------
+  if (document.querySelector('.faq-scrolly-wrapper')) {
+    const faqTitle = document.querySelector('.faq-big-title');
+    const faqItems = document.querySelectorAll('.faq-scroll-item');
+    const faqContainer = document.querySelector('.faq-scroll-items');
+    
+    if (faqTitle) splitLetters(faqTitle);
+
+    function updateFAQHighlights() {
+      const parent = faqContainer.parentElement;
+      if (!parent) return;
+      const containerHeight = parent.offsetHeight;
+      const scrollY = -gsap.getProperty(faqContainer, "y");
+      const centerPoint = scrollY + (containerHeight / 2);
+      
+      faqItems.forEach((item) => {
+        const itemTop = item.offsetTop;
+        const itemHeight = item.offsetHeight;
+        const itemCenter = itemTop + (itemHeight / 2);
+        const dist = Math.abs(centerPoint - itemCenter);
+        
+        let opacity = 0.15;
+        let scale = 0.95;
+        let blur = 4;
+        
+        if (dist < 100) {
+          opacity = 1; scale = 1; blur = 0;
+        } else if (dist < 300) {
+          const t = (dist - 100) / 200;
+          opacity = 1 - (t * 0.85);
+          scale = 1 - (t * 0.05);
+          blur = t * 4;
+        }
+        
+        gsap.set(item, { opacity, scale, filter: `blur(${blur}px)`, overwrite: "auto" });
+      });
+    }
+
+    const mm = gsap.matchMedia();
+
+    mm.add({
+      isDesktop: "(min-width: 769px)",
+      isMobile: "(max-width: 768px)"
+    }, (context) => {
+      let { isDesktop, isMobile } = context.conditions;
+
+      const faqTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".faq-scrolly-wrapper",
+          start: "top top",
+          end: "bottom bottom",
+          pin: ".faq-pinned-section",
+          scrub: 1,
+          onUpdate: updateFAQHighlights
+        }
+      });
+
+      // Move the container up so items pass through the center
+      faqTl.to(faqContainer, {
+        y: () => {
+          const containerHeight = faqContainer.parentElement.offsetHeight;
+          const scrollHeight = faqContainer.scrollHeight;
+          // We want to scroll until the last item is centered or past
+          return -(scrollHeight - (containerHeight / 2) - 100); 
+        },
+        ease: "none",
+        onUpdate: updateFAQHighlights
+      });
+
+      // Unified header behavior within the pinned section
+      // No extra pin needed if parent .faq-pinned-section is pinned
+      
+      updateFAQHighlights();
+    });
+
+    // Reveal Header Letters
+    if (faqTitle && faqTitle.querySelectorAll('.letter').length > 0) {
+      gsap.from(faqTitle.querySelectorAll('.letter'), {
+        scrollTrigger: {
+          trigger: ".faq-scrolly-wrapper",
+          start: "top 60%",
+        },
+        opacity: 0,
+        y: 30,
+        stagger: 0.02,
+        duration: 1,
+        ease: "power2.out"
+      });
+    }
+  }
+
+  // ---------- LAST 2 SECTIONS: STICKY REVEAL (MatchMedia) ----------
+  if (document.querySelector('.last-sections-sticky-wrapper')) {
+    const mmLast = gsap.matchMedia();
+    
+    mmLast.add({
+      isDesktop: "(min-width: 769px)",
+      isMobile: "(max-width: 768px)"
+    }, (context) => {
+      let { isDesktop, isMobile } = context.conditions;
+      
+      // Simplified flow: Section 5 and 6 now document flow naturally.
+      // We just need a ScrollTrigger to handle text reveals if desired.
+      gsap.from(".virl-final-section .final-inner", {
+        scrollTrigger: {
+          trigger: ".virl-final-section",
+          start: "top 80%",
+          toggleActions: "play none none reverse"
+        },
+        y: 60,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out"
+      });
+    });
+  }
+
+  // ---------- SIGNUP SECTION: BADGES ----------
+  if (document.querySelector('.virl-signup-landing')) {
+    const setA = gsap.utils.toArray('.badge-set-a');
+    const setB = gsap.utils.toArray('.badge-set-b');
+
+    gsap.set(setB, { autoAlpha: 0, scale: 0.5, y: 40 });
+    gsap.set('.badge-activity', { width: 0 });
+
+    gsap.from('.signup-hero-title', {
+      scrollTrigger: { trigger: '.virl-signup-landing', start: 'top 80%' },
+      y: 60, autoAlpha: 0, duration: 1.2, ease: 'power4.out'
+    });
+    gsap.from('.signup-sub-desc, .virl-signup-huge-btn', {
+      scrollTrigger: { trigger: '.virl-signup-landing', start: 'top 75%' },
+      y: 30, autoAlpha: 0, stagger: 0.2, duration: 1, ease: 'power3.out'
+    });
+
+    gsap.from(setA, {
+      scrollTrigger: { trigger: '.virl-signup-landing', start: 'top 70%' },
+      y: 30, autoAlpha: 0, scale: 0.7,
+      stagger: 0.1, duration: 0.8, ease: 'back.out(1.7)',
+      delay: 0.3
+    });
+
+    const switchTl = gsap.timeline({ repeat: -1, repeatDelay: 2.5 });
+    switchTl.to(setA, { autoAlpha: 0, y: -30, scale: 0.8, stagger: 0.05, duration: 0.4, ease: 'power4.in', delay: 3 });
+    switchTl.to(setB, { autoAlpha: 1, y: 0, scale: 1, stagger: 0.07, duration: 0.6, ease: 'back.out(2)' }, '-=0.1');
+    switchTl.to('.badge-activity', { width: 'auto', duration: 0.5, ease: 'power3.out' }, '<');
+    switchTl.to(setB, { autoAlpha: 0, y: -30, scale: 0.8, stagger: 0.05, duration: 0.4, ease: 'power4.in', delay: 3 });
+    switchTl.set('.badge-activity', { width: 0 });
+    switchTl.to(setA, { autoAlpha: 1, y: 0, scale: 1, stagger: 0.07, duration: 0.6, ease: 'back.out(2)' });
+
+    gsap.utils.toArray('.overlay-badge').forEach((badge, i) => {
+      gsap.to(badge, {
+        y: `+=${4 + (i % 3) * 2}`,
+        rotation: 1.5 * (i % 2 === 0 ? 1 : -1),
+        duration: 2.5 + i * 0.3,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+      });
+    });
+
+    const proxy = { x: 0, y: 0 };
+    const setterX = gsap.quickSetter('.badge-layer', 'x', 'px');
+    const setterY = gsap.quickSetter('.badge-layer', 'y', 'px');
+
+    window.addEventListener('mousemove', (e) => {
+      const xNorm = (e.clientX / window.innerWidth) - 0.5;
+      const yNorm = (e.clientY / window.innerHeight) - 0.5;
+      gsap.to(proxy, {
+        x: xNorm * 40,
+        y: yNorm * 40,
+        duration: 1.2,
+        ease: 'power3.out',
+        overwrite: true,
+        onUpdate: () => { setterX(proxy.x); setterY(proxy.y); }
+      });
+    });
+  }
 });
